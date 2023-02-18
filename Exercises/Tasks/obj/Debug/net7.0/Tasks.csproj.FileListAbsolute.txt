@@ -1,0 +1,15 @@
+D:\Programming\Basics_of_programming_2part\Exercises\Tasks\bin\Debug\net7.0\Tasks.exe
+D:\Programming\Basics_of_programming_2part\Exercises\Tasks\bin\Debug\net7.0\Tasks.deps.json
+D:\Programming\Basics_of_programming_2part\Exercises\Tasks\bin\Debug\net7.0\Tasks.runtimeconfig.json
+D:\Programming\Basics_of_programming_2part\Exercises\Tasks\bin\Debug\net7.0\Tasks.dll
+D:\Programming\Basics_of_programming_2part\Exercises\Tasks\bin\Debug\net7.0\Tasks.pdb
+D:\Programming\Basics_of_programming_2part\Exercises\Tasks\obj\Debug\net7.0\Tasks.csproj.AssemblyReference.cache
+D:\Programming\Basics_of_programming_2part\Exercises\Tasks\obj\Debug\net7.0\Tasks.GeneratedMSBuildEditorConfig.editorconfig
+D:\Programming\Basics_of_programming_2part\Exercises\Tasks\obj\Debug\net7.0\Tasks.AssemblyInfoInputs.cache
+D:\Programming\Basics_of_programming_2part\Exercises\Tasks\obj\Debug\net7.0\Tasks.AssemblyInfo.cs
+D:\Programming\Basics_of_programming_2part\Exercises\Tasks\obj\Debug\net7.0\Tasks.csproj.CoreCompileInputs.cache
+D:\Programming\Basics_of_programming_2part\Exercises\Tasks\obj\Debug\net7.0\Tasks.dll
+D:\Programming\Basics_of_programming_2part\Exercises\Tasks\obj\Debug\net7.0\refint\Tasks.dll
+D:\Programming\Basics_of_programming_2part\Exercises\Tasks\obj\Debug\net7.0\Tasks.pdb
+D:\Programming\Basics_of_programming_2part\Exercises\Tasks\obj\Debug\net7.0\Tasks.genruntimeconfig.cache
+D:\Programming\Basics_of_programming_2part\Exercises\Tasks\obj\Debug\net7.0\ref\Tasks.dll
