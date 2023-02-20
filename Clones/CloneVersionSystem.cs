@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using System.Linq;
 
 namespace Clones;
 
@@ -12,6 +9,12 @@ public class Node<T>
     {
         Data = data;
     }
+
+    public Node(T data, Node<T> next) : this(data)
+    {
+        Next = next;
+    }
+
     public T Data { get; set; }
     public Node<T> Next { get; set; }
 }
@@ -19,51 +22,79 @@ public class Node<T>
 public class NodeStack<T>
 {
     Node<T> head;
-    int count;
+    Node<T> tail;
+    int _count;
 
-    public bool IsEmpty
-    {
-        get { return count == 0; }
-    }
-    public int Count
-    {
-        get { return count; }
-    }
+    public bool IsEmpty => _count == 0;
+    public int Count => _count;
 
     public void Push(T item)
     {
         Node<T> node = new Node<T>(item);
+        Push(node);
+    }
+
+    public void Push(Node<T> node)
+    {
         node.Next = head;
         head = node;
-        count++;
+        if (tail == null)
+            tail = node;
+        _count++;
     }
+
     public T Pop()
     {
         if (IsEmpty)
-            throw new InvalidOperationException("Стек пуст");
+            throw new InvalidOperationException();
         Node<T> temp = head;
         head = head.Next;
-        count--;
+        if (Count == 1)
+            tail = null;
+        _count--;
         return temp.Data;
     }
+
     public T Peek()
     {
         if (IsEmpty)
-            throw new InvalidOperationException("Стек пуст");
+            throw new InvalidOperationException();
         return head.Data;
+    }
+
+    public NodeStack<T> CopyNodeStack()
+    {
+        var newNodeStack = new NodeStack<T>();
+        var headNode = new Node<T>(head.Data, head.Next);
+        var tailNode = new Node<T>(tail.Data, tail.Next);
+        newNodeStack.head = headNode;
+        newNodeStack.tail = tailNode;
+        newNodeStack._count = Count;
+
+        return newNodeStack;
     }
 }
 
 public class Clone
 {
-    public Stack<int> LessonsStack { get; set; }
-    public Stack<int> RollbackStack { get; set; }
-    unsafe public Clone CopyClone()
+    public NodeStack<int> LessonsStack { get; set; }
+    public NodeStack<int> RollbackStack { get; set; }
+    
+    public Clone()
     {
+        LessonsStack = new NodeStack<int>();
+        RollbackStack = new NodeStack<int>();
+    }
+
+    public Clone CopyClone()
+    {
+        var lessonsStackCopy = (LessonsStack is null || LessonsStack.IsEmpty) ? new NodeStack<int>() : LessonsStack.CopyNodeStack();
+        var rollbackStackCopy = (RollbackStack is null || RollbackStack.IsEmpty) ? new NodeStack<int>() : RollbackStack.CopyNodeStack();
+
         return new Clone
         {
-            LessonsStack = new Stack<int>(LessonsStack),
-            RollbackStack = new Stack<int>(RollbackStack)
+            LessonsStack = lessonsStackCopy,
+            RollbackStack = rollbackStackCopy
         };
     }
 }
@@ -76,7 +107,7 @@ public class CloneVersionSystem : ICloneVersionSystem
     {
         Clones = new List<Clone>
         {
-            new Clone() {LessonsStack= new Stack<int>(), RollbackStack= new Stack<int>() }
+            new Clone()
         };
     }
 
@@ -91,7 +122,7 @@ public class CloneVersionSystem : ICloneVersionSystem
             case "learn":
                 var program = int.Parse(splittedQuery[2]);
                 currentClone.LessonsStack.Push(program);
-                currentClone.RollbackStack = new Stack<int>();
+                currentClone.RollbackStack = new NodeStack<int>();
                 return null;
             case "rollback":
                 var deletedProgram = currentClone.LessonsStack.Pop();

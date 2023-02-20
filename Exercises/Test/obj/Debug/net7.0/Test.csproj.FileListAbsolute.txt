@@ -1,0 +1,15 @@
+D:\Programming\Basics_of_programming_2part\Exercises\Test\bin\Debug\net7.0\Test.exe
+D:\Programming\Basics_of_programming_2part\Exercises\Test\bin\Debug\net7.0\Test.deps.json
+D:\Programming\Basics_of_programming_2part\Exercises\Test\bin\Debug\net7.0\Test.runtimeconfig.json
+D:\Programming\Basics_of_programming_2part\Exercises\Test\bin\Debug\net7.0\Test.dll
+D:\Programming\Basics_of_programming_2part\Exercises\Test\bin\Debug\net7.0\Test.pdb
+D:\Programming\Basics_of_programming_2part\Exercises\Test\obj\Debug\net7.0\Test.csproj.AssemblyReference.cache
+D:\Programming\Basics_of_programming_2part\Exercises\Test\obj\Debug\net7.0\Test.GeneratedMSBuildEditorConfig.editorconfig
+D:\Programming\Basics_of_programming_2part\Exercises\Test\obj\Debug\net7.0\Test.AssemblyInfoInputs.cache
+D:\Programming\Basics_of_programming_2part\Exercises\Test\obj\Debug\net7.0\Test.AssemblyInfo.cs
+D:\Programming\Basics_of_programming_2part\Exercises\Test\obj\Debug\net7.0\Test.csproj.CoreCompileInputs.cache
+D:\Programming\Basics_of_programming_2part\Exercises\Test\obj\Debug\net7.0\Test.dll
+D:\Programming\Basics_of_programming_2part\Exercises\Test\obj\Debug\net7.0\refint\Test.dll
+D:\Programming\Basics_of_programming_2part\Exercises\Test\obj\Debug\net7.0\Test.pdb
+D:\Programming\Basics_of_programming_2part\Exercises\Test\obj\Debug\net7.0\Test.genruntimeconfig.cache
+D:\Programming\Basics_of_programming_2part\Exercises\Test\obj\Debug\net7.0\ref\Test.dll

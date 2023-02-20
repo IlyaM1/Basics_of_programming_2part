@@ -63,7 +63,24 @@ public class CloneVersionSystem_should
 		Assert.AreEqual(new[] { "42", "basic" }, res);
 	}
 
-	[Test]
+    [Test]
+    public void MassiveClone()
+    {
+		var commands = new List<string>();
+		for (var i = 0; i < 1000; i++)
+			commands.Add($"learn 1 {i * 10}"); // 9990 - last
+		commands.Add("clone 1");
+		for (var i = 0; i < 100; i++)
+            commands.Add("rollback 2"); // у 2+ clones last == 8990
+        for (var i = 0; i < 1000; i++)
+            commands.Add("clone 2");
+		commands.Add("check 2");
+		var res = Execute(commands.ToArray());
+        // var res = Execute("learn 1 42", "clone 1", "rollback 2", "check 1", "check 2");
+        Assert.AreEqual(new[] { "8990" }, res);
+    }
+
+    [Test]
 	public void ExecuteSample()
 	{
 		var res = Execute("learn 1 5",
