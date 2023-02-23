@@ -1,0 +1,15 @@
+D:\Programming\Basics_of_programming_2part\Exercises\YieldReturnTasks\bin\Debug\net7.0\YieldReturnTasks.exe
+D:\Programming\Basics_of_programming_2part\Exercises\YieldReturnTasks\bin\Debug\net7.0\YieldReturnTasks.deps.json
+D:\Programming\Basics_of_programming_2part\Exercises\YieldReturnTasks\bin\Debug\net7.0\YieldReturnTasks.runtimeconfig.json
+D:\Programming\Basics_of_programming_2part\Exercises\YieldReturnTasks\bin\Debug\net7.0\YieldReturnTasks.dll
+D:\Programming\Basics_of_programming_2part\Exercises\YieldReturnTasks\bin\Debug\net7.0\YieldReturnTasks.pdb
+D:\Programming\Basics_of_programming_2part\Exercises\YieldReturnTasks\obj\Debug\net7.0\YieldReturnTasks.csproj.AssemblyReference.cache
+D:\Programming\Basics_of_programming_2part\Exercises\YieldReturnTasks\obj\Debug\net7.0\YieldReturnTasks.GeneratedMSBuildEditorConfig.editorconfig
+D:\Programming\Basics_of_programming_2part\Exercises\YieldReturnTasks\obj\Debug\net7.0\YieldReturnTasks.AssemblyInfoInputs.cache
+D:\Programming\Basics_of_programming_2part\Exercises\YieldReturnTasks\obj\Debug\net7.0\YieldReturnTasks.AssemblyInfo.cs
+D:\Programming\Basics_of_programming_2part\Exercises\YieldReturnTasks\obj\Debug\net7.0\YieldReturnTasks.csproj.CoreCompileInputs.cache
+D:\Programming\Basics_of_programming_2part\Exercises\YieldReturnTasks\obj\Debug\net7.0\YieldReturnTasks.dll
+D:\Programming\Basics_of_programming_2part\Exercises\YieldReturnTasks\obj\Debug\net7.0\refint\YieldReturnTasks.dll
+D:\Programming\Basics_of_programming_2part\Exercises\YieldReturnTasks\obj\Debug\net7.0\YieldReturnTasks.pdb
+D:\Programming\Basics_of_programming_2part\Exercises\YieldReturnTasks\obj\Debug\net7.0\YieldReturnTasks.genruntimeconfig.cache
+D:\Programming\Basics_of_programming_2part\Exercises\YieldReturnTasks\obj\Debug\net7.0\ref\YieldReturnTasks.dll
