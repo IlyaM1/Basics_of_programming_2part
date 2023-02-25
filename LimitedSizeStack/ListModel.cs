@@ -6,9 +6,8 @@ namespace LimitedSizeStack;
 public class ListModel<TItem>
 {
 	public List<TItem> Items { get; }
-	public int UndoLimit;
-	public LimitedSizeStack<TItem> UndoActionsStack { get; set; }
-	public LimitedSizeStack<int> RemovedItemsIndexes { get; set; }
+	private LimitedSizeStack<TItem> UndoActionsStack { get; set; }
+	private LimitedSizeStack<int> RemovedItemsIndexes { get; set; }
         
 	public ListModel(int undoLimit) : this(new List<TItem>(), undoLimit)
 	{
@@ -17,7 +16,6 @@ public class ListModel<TItem>
 	public ListModel(List<TItem> items, int undoLimit)
 	{
 		Items = items;
-		UndoLimit = undoLimit;
 		UndoActionsStack = new LimitedSizeStack<TItem>(undoLimit);
         RemovedItemsIndexes = new LimitedSizeStack<int>(undoLimit);
     }
