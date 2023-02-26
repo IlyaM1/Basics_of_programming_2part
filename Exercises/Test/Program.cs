@@ -1,105 +1,132 @@
-﻿namespace Test
+﻿using System.Diagnostics;
+
+namespace Program
 {
-    public class Node<T>
+    public static class IsLazyCheckClass
     {
-        public Node(T data)
-        {
-            Data = data;
-        }
-        public Node(T data, Node<T> next) : this(data)
-        {
-            Next = next;
-        }
-        public T Data { get; set; }
-        public Node<T> Next { get; set; }
-    }
+        private static int CollectionElementsLimit => 100;
+        private static int IterationsCheckLimit => 100;
 
-    public class NodeStack<T>
-    {
-        Node<T> head;
-        Node<T> tail;
-        int count;
+        private static bool IsLazyImmutable<T>(IEnumerable<T> collection)
+        {
+            var firstEnumerator = collection.GetEnumerator();
+            var secondEnumerator = collection.GetEnumerator();
 
-        public bool IsEmpty
-        {
-            get { return count == 0; }
-        }
-        public int Count
-        {
-            get { return count; }
+            firstEnumerator.MoveNext();
+            secondEnumerator.MoveNext();
+
+            return !object.ReferenceEquals(firstEnumerator.Current, secondEnumerator.Current);
         }
 
-        public void Push(T item)
+        private static double GetTime<T>(IEnumerable<T> collection)
         {
-            Node<T> node = new Node<T>(item);
-            node.Next = head;
-            head = node;
-            if (tail == null)
-                tail = node;
-            count++;
-        }
+            var sw = new Stopwatch();
+            sw.Start();
+            var enumerator = collection.GetEnumerator();
 
-        public void Push(Node<T> node)
-        {
-            node.Next = head;
-            head = node;
-            if (tail == null)
-                tail = node;
-            count++;
-        }
-
-        public T Pop()
-        {
-            if (IsEmpty)
-                throw new InvalidOperationException("Стек пуст");
-            Node<T> temp = head;
-            head = head.Next;
-            if (Count == 1)
-                tail = null;
-            count--;
-            return temp.Data;
-        }
-
-        public T Peek()
-        {
-            if (IsEmpty)
-                throw new InvalidOperationException("Стек пуст");
-            return head.Data;
-        }
-
-        public NodeStack<T> CopyNodeStack()
-        {
-            var newNodeStack = new NodeStack<T>();
-            var headNode = new Node<T>(head.Data, head.Next);
-            var tailNode = new Node<T>(tail.Data, tail.Next);
-            newNodeStack.head = headNode;
-            newNodeStack.tail = tailNode;
-            newNodeStack.count = Count;
-
-            return newNodeStack;
-        }
-    }
-
-    internal class Program
-    {
-        public static void PrintNodeStack(NodeStack<int> nodeStack)
-        {
-            var leng = nodeStack.Count;
-            for (var i = 0; i < leng; i++)
+            var moveNextNumber = 0;
+            while (enumerator.MoveNext())
             {
-                Console.WriteLine(nodeStack.Pop());
+                moveNextNumber++;
+                if (moveNextNumber >= CollectionElementsLimit)
+                    break;
+            }
+
+            sw.Stop();
+            return sw.Elapsed.TotalMilliseconds;
+        }
+
+        private static List<T> GetFilledList<T>(IEnumerable<T> collection)
+        {
+            var collectionElementsList = new List<T>();
+            var enumerator = collection.GetEnumerator();
+            var moveNextNumber = 0;
+            while (enumerator.MoveNext())
+            {
+                collectionElementsList.Add(enumerator.Current);
+                moveNextNumber++;
+                if (moveNextNumber >= CollectionElementsLimit)
+                    break;
+            }
+            return collectionElementsList;
+        }
+
+        private static bool IsLazyMutable<T>(IEnumerable<T> collection)
+        {
+            var collectionElementsList = GetFilledList<T>(collection);
+
+            var listTotalTime = 0.0;
+            var enumeratorTotalTime = 0.0;
+
+            for (int i = 0; i < IterationsCheckLimit; i++)
+            {
+                listTotalTime += GetTime<T>(collectionElementsList);
+                enumeratorTotalTime += GetTime(collection);
+            }
+
+            return enumeratorTotalTime > listTotalTime;
+        }
+
+        public static bool IsLazy<T>(IEnumerable<T> collection)
+        {
+            var type = typeof(T);
+
+            if (type is int || type is double || type is double || type is char || type is bool || type is string || type.IsArray)
+                return IsLazyImmutable(collection);
+
+            return IsLazyMutable(collection);
+        }
+    }
+
+    public class LazyCollectionsGenerators
+    {
+        public static IEnumerable<int> ReturnLazyCollection(IEnumerable<int> collection)
+        {
+            var enumerator = collection.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                var smt = enumerator.Current;
+
+                smt *= 2;
+
+                yield return smt;
             }
         }
 
+        public static IEnumerable<string[]> GenerateLazyClassCollection()
+        {
+            var i = 0;
+            while (true)
+            {
+                string[] a = new string[1];
+                a[0] = (i++).ToString();
+                yield return a;
+            }
+        }
+
+        public static IEnumerable<int> GenerateLazyStructCollection()
+        {
+            var i = 0;
+            while (true)
+                yield return i++;
+        }
+    }
+
+    class Program
+    {
         static void Main(string[] args)
         {
-            var stack1 = new NodeStack<int>();
-            for (var i = 1; i <= 3; i++)
-            {
-                stack1.Push(i);
-            }
-            var stack2 = stack1.CopyNodeStack();
-            PrintNodeStack(stack2);
+            var intArray = new int[] { 1, 2, 22, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 32, 542, 5, 3245, 34, 6467, 5, 46, 46, 456, 234, 5, 345, 325, 342, 54, 2453, 2453, 25, 325, 543, 34 };
+            var strArray = new string[] { "12", "123", "1234" };
+            Console.WriteLine(IsLazyCheckClass.IsLazy(intArray));
+            Console.WriteLine();
+            Console.WriteLine(IsLazyCheckClass.IsLazy(strArray));
+            Console.WriteLine();
+            Console.WriteLine(IsLazyCheckClass.IsLazy(LazyCollectionsGenerators.GenerateLazyStructCollection()));
+            Console.WriteLine();
+            Console.WriteLine(IsLazyCheckClass.IsLazy(LazyCollectionsGenerators.GenerateLazyClassCollection()));
+            Console.WriteLine();
+            Console.WriteLine(IsLazyCheckClass.IsLazy(LazyCollectionsGenerators.ReturnLazyCollection(LazyCollectionsGenerators.GenerateLazyStructCollection())));
         }
     }
 }
