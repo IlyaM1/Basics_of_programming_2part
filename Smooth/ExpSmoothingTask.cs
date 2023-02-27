@@ -7,22 +7,22 @@ public static class ExpSmoothingTask
 {
     public static IEnumerable<DataPoint> SmoothExponentialy(this IEnumerable<DataPoint> data, double alpha)
     {
-        var dataEnumerator = data.GetEnumerator();
-        var isAtLeastOneElementInData = dataEnumerator.MoveNext();
+        var previousElementSmoothedY = double.NaN;
 
-        if (!isAtLeastOneElementInData)
-            yield break;
-
-        var previousElementSmoothedY = dataEnumerator.Current.OriginalY;
-        yield return dataEnumerator.Current.WithExpSmoothedY(previousElementSmoothedY);
-
-        while (dataEnumerator.MoveNext())
+        foreach (var point in data)
         {
-            var point = dataEnumerator.Current;
-            var smoothedPoint = point.WithExpSmoothedY(previousElementSmoothedY +
-                alpha * (point.OriginalY - previousElementSmoothedY));
-            yield return smoothedPoint;
-            previousElementSmoothedY = smoothedPoint.ExpSmoothedY;
+            if (double.IsNaN(previousElementSmoothedY))
+            {
+                previousElementSmoothedY = point.OriginalY;
+                yield return point.WithExpSmoothedY(previousElementSmoothedY);
+            }
+            else
+            {
+                var smoothedPoint = point.WithExpSmoothedY(previousElementSmoothedY +
+                    alpha * (point.OriginalY - previousElementSmoothedY));
+                previousElementSmoothedY = smoothedPoint.ExpSmoothedY;
+                yield return smoothedPoint;
+            }
         }
     }
 }

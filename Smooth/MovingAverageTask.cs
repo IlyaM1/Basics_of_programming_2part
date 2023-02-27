@@ -6,32 +6,29 @@ public static class MovingAverageTask
 {
     public static IEnumerable<DataPoint> MovingAverage(this IEnumerable<DataPoint> data, int windowWidth)
     {
-        var dataEnumerator = data.GetEnumerator();
-        var isAtLeastOneElementInData = dataEnumerator.MoveNext();
+        var sum = 0.0;
+        var window = new Queue<double>();
 
-        if (!isAtLeastOneElementInData)
-            yield break;
-
-        var currentPoint = dataEnumerator.Current;
-        var sum = currentPoint.OriginalY;
-        var queue = new Queue<double>();
-        queue.Enqueue(currentPoint.OriginalY);
-
-        yield return currentPoint.WithAvgSmoothedY(currentPoint.OriginalY);
-
-        while (dataEnumerator.MoveNext())
+        foreach (var point in data)
         {
-            var point = dataEnumerator.Current;
-            var value = point.OriginalY;
+            if (window.Count == 0)
+            {
+                window.Enqueue(point.OriginalY);
+                sum += point.OriginalY;
+                yield return point.WithAvgSmoothedY(sum / window.Count); ;
+            }
+            else
+            {
+                var value = point.OriginalY;
 
-            queue.Enqueue(value);
-            sum += value;
+                window.Enqueue(value);
+                sum += value;
 
-            if (queue.Count > windowWidth)
-                sum -= queue.Dequeue();
+                if (window.Count > windowWidth)
+                    sum -= window.Dequeue();
 
-            var newPoint = point.WithAvgSmoothedY(sum / queue.Count);
-            yield return newPoint;
+                yield return point.WithAvgSmoothedY(sum / window.Count);
+            }
         }
     }
 }
