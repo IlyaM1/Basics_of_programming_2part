@@ -10,18 +10,28 @@ namespace func.brainfuck
 		public byte[] Memory { get; }
 		public int MemoryPointer { get; set; }
 
+		private Dictionary<char, Action<IVirtualMachine>> _commands;
+
 		public VirtualMachine(string program, int memorySize)
 		{
-		}
+			Memory = new byte[memorySize];
+			Instructions = program;
+			_commands = new Dictionary<char, Action<IVirtualMachine>>();
+        }
 
 		public void RegisterCommand(char symbol, Action<IVirtualMachine> execute)
 		{
-			throw new NotImplementedException();
+			_commands.Add(symbol, execute);
 		}
 
 		public void Run()
 		{
-			throw new NotImplementedException();
+            while (InstructionPointer < Instructions.Length)
+			{
+				if (_commands.TryGetValue(Instructions[InstructionPointer], out Action<IVirtualMachine> command))
+                    command(this);
+				InstructionPointer += 1;
+            }
 		}
 	}
 }
