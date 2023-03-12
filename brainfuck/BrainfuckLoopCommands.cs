@@ -1,69 +1,46 @@
-using System;
 using System.Collections.Generic;
 
 namespace func.brainfuck
 {
-	public class BrainfuckLoopCommands
-	{
+    public class BrainfuckLoopCommands
+    {
+        public static Dictionary<int, int> LeftToRightBrackets;
+        public static Dictionary<int, int> RightToLeftBrackets;
+
         public static void RegisterTo(IVirtualMachine vm)
-		{
-			FindLeftAndRightBrackets(vm);
+        {
+            FindBrackets(vm);
 
             vm.RegisterCommand('[', b => {
-				if (vm.Memory[vm.MemoryPointer] == 0)
-				{
-                    var tuple = FindLeftAndRightBrackets(vm);
-                    var left = tuple.Item1;
-                    var right = tuple.Item2;
-                    vm.InstructionPointer = right[left.IndexOf(vm.InstructionPointer)];
-                }
-					
-			});
+                if (vm.Memory[vm.MemoryPointer] == 0)
+                    vm.InstructionPointer = LeftToRightBrackets[vm.InstructionPointer];
+            }
+            );
             vm.RegisterCommand(']', b => {
                 if (vm.Memory[vm.MemoryPointer] != 0)
-				{
-                    var tuple = FindLeftAndRightBrackets(vm);
-                    var left = tuple.Item1;
-                    var right = tuple.Item2;
-                    var IP = vm.InstructionPointer;
-					var index = right.IndexOf(IP);
-					var leftBracket = left[index];
-                    vm.InstructionPointer = leftBracket;
-                } 
-                    
+                    vm.InstructionPointer = RightToLeftBrackets[vm.InstructionPointer];
             });
         }
 
-		private static Tuple<List<int>, List<int>> FindLeftAndRightBrackets(IVirtualMachine vm)
-		{
-            var _leftBrackets = new List<int>();
-            var _rightBrackets = new List<int>();
+        private static void FindBrackets(IVirtualMachine vm)
+        {
+            LeftToRightBrackets= new Dictionary<int, int>();
+            RightToLeftBrackets = new Dictionary<int, int>();
 
-			//var commands = vm.Instructions.Replace('\r', ' ').Replace('\n', ' ').Replace(" ", "");
-			var commands = vm.Instructions;
-
-            var left = 0;
-			var right = commands.Length - 1;
-
-			while (left < right)
-			{
-				if (commands[left] == '[')
-				{
-					_leftBrackets.Add(left);
-					while (left < right)
-					{
-						if (commands[right] == ']')
-						{
-							_rightBrackets.Add(right);
-							break;
-						}
-						right--;
-					}
-				}
-				left++;
-			}
-
-			return new Tuple<List<int>, List<int>>(_leftBrackets, _rightBrackets);
+            var leftBrackets = new Stack<int>();
+            var i = 0;
+            while (i < vm.Instructions.Length)
+            {
+                if (vm.Instructions[i] == '[')
+                    leftBrackets.Push(i);
+                else if (vm.Instructions[i] == ']')
+                {
+                    var leftBracketPopped = leftBrackets.Pop();
+                    LeftToRightBrackets.Add(leftBracketPopped, i);
+                    RightToLeftBrackets.Add(i, leftBracketPopped);
+                }
+                i++;
+            }
         }
-	}
+    }
 }
